@@ -74,43 +74,37 @@ switch (true) {
   case ($uri === "/"):
     $router->get("/", BlogController::index());
     break;
-
-  case ($uri === "/jouer"):
-    var_dump('totot');
-    $router->get("/jouer", MachineController::play());
-    break;
-
+  
   case (str_contains($uri, "/articles")):
     if ($idParam && !str_contains($uri, "/update")) {
       $router->get("/articles/$idParam", ArticlesController::getById($idParam));
       exit;
-    } else if ($idParam && str_contains($uri, "/update")) {
+    }
+    else if($idParam && str_contains($uri, "/update")){
       $router->get("/articles/update/$idParam", ArticlesController::update($idParam));
       exit;
-    } else if (!$idParam && str_contains($uri, "/update")) {
+    }
+    else if(!$idParam && str_contains($uri, "/update")){
       $router->post("/articles/update", ArticlesController::updateArticle());
       exit;
-    } else if (!$idParam && str_contains($uri, "/delete")) {
+    }
+    else if(!$idParam && str_contains($uri, "/delete")){
       $router->post("/articles/delete", ArticlesController::deleteArticle());
       exit;
     }
-
     $router->get("/articles", ArticlesController::getList());
+
+    case (str_contains($uri, "/slot-machine")): 
+      $router->get("/slot-machine", MachineController::index());
+      exit;
+    case (str_contains($uri, "/play")): 
+      $router->get("/play", MachineController::play());
+      exit;
+   
     break;
   default:
     ErrorsController::launchError(404);
     break;
-
-
-
-
 }
 
 $router->run();
-
-define('ROOT', dirname(__FILE__));
-require_once ROOT . "/controllers/MachineController.php";
-require_once ROOT . '/models/Router.php';
-
-// Appeler le routeur avec l'URI
-Router::handle($uri);

@@ -25,20 +25,4 @@ class Router{
     call_user_func($this->routes[$method][$uri]);
   }
 
-  public static function handle($uri)
-    {
-        switch ($uri) {
-            case '/slot-machine':
-              MachineController::index();
-                break;
-
-            case '/play':
-              MachineController::play();
-                break;
-
-            default:
-                http_response_code(404);
-                echo "Page introuvable";
-        }
-    }
 }

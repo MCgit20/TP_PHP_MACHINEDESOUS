@@ -1,18 +1,19 @@
 <?php
+ 
 namespace Controllers;
+ 
 class MachineController
 {
-    public static function playindex()
+    public static function index()
     {
-        require_once ROOT."/views/machine.php";
+        // Charge la vue principale pour la machine à sous
+        require_once ROOT . "/views/slot-machine.php";
+        require_once ROOT . "/templates/global.php";
     }
-
+ 
     public static function play()
     {
-        
-        header('Content-Type: application/json');
-
-        // Définition des symboles et poids
+        // Génère les rouleaux et retourne le résultat en JSON
         $symbols_with_weights = [
             '🍋' => 40,
             '🍒' => 30,
@@ -20,8 +21,7 @@ class MachineController
             '🔔' => 10,
             '💎' => 5,
         ];
-
-        // Table des gains
+ 
         $paytable = [
             '🍋🍋🍋' => 40,
             '🍒🍒🍒' => 50,
@@ -29,27 +29,22 @@ class MachineController
             '🔔🔔🔔' => 150,
             '💎💎💎' => 200,
         ];
-
-        // Générer les symboles
+ 
         $reel1 = self::getRandomSymbol($symbols_with_weights);
         $reel2 = self::getRandomSymbol($symbols_with_weights);
         $reel3 = self::getRandomSymbol($symbols_with_weights);
-
-        // Combinaison et calcul des gains
+ 
         $combination = $reel1 . $reel2 . $reel3;
-        $gain = isset($paytable[$combination]) ? $paytable[$combination] : 0;
-
-        // Réponse JSON
+        $gain = $paytable[$combination] ?? 0;
+ 
+        header('Content-Type: application/json');
         echo json_encode([
             'success' => true,
             'reels' => [$reel1, $reel2, $reel3],
             'gain' => $gain,
         ]);
-
-        require_once ROOT . "/templates/global.php";
-        require_once ROOT."/views/slot-machine.php";
     }
-
+ 
     private static function getRandomSymbol($symbols_with_weights)
     {
         $rand = mt_rand(1, array_sum($symbols_with_weights));
@@ -59,10 +54,6 @@ class MachineController
             }
             $rand -= $weight;
         }
-        return null; // Cas improbable
-    }  
-    
-    public static function test(){
-       require_once ROOT . "/templates/global.php";
+        return null;
     }
 }

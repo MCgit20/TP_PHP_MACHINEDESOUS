@@ -23,7 +23,7 @@
         <li><a href="/articles">Nos articles</a></li>
         <li><a href="/articles/1">Article 1</a></li>
         <li><a href="/contact">Contact</a></li>
-        <li><a href="/jouer">Jouer</a></li>
+        <li><a href="/slot-machine">Jouer</a></li>
       </ul>
       <div class="burger">
         <span></span>
